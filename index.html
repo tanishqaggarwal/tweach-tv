@@ -1,63 +1,151 @@
   <!DOCTYPE html>
   <html>
-    <head>
+  <head>
     <title>Tweach.tv</title>
-      <!--Import Google Icon Font-->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import Google Icon Font-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
 
-    <body>
+  <body>
 
-      <nav class = "blue lighten-1">
-    <div class="nav-wrapper container blue lighten-1">
-          <div class="input-field">
+    <nav class = "blue lighten-1">
+      <ul class = "left">
+        <li><a class = "modal-trigger" href = "#teach-modal"><i class = "material-icons">add</i></a></li>
+      </ul>
+      <div class="nav-wrapper container blue lighten-1">
+        <div class="input-field">
           <input id="search" type="search" required>
           <label for="search"><i class="material-icons">search</i></label>
           <i class="material-icons">close</i>
         </div>
       </div>
-        <ul class = "right">
-        <li><a href = "#"><i class = "material-icons">add</i></a></li>
-      </ul>
-  </nav>
 
-  <div class = "container">
-  
-  <div class = "section">
-    <h5>Latest streams</h5>
-    <div class = "row">
-      <div class = "col s12 m4">
-        <div class = "card">
-          <div class = "card-content">
-            <div class = "card-title">Lecture 1</div>
+    </nav>
+
+    <div class = "container">
+      <div class = "section">
+        <h5>Latest streams</h5>
+        <div class = "row">
+          <div class = "col s12 m4">
+            <div class = "card">
+              <div class = "card-content">
+                <div class = "card-title">Lecture 1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class = "section">
+        <h5>By category</h5>
+        <div class="card horizontal">
+          <div class="card-image">
+            <img src="http://lorempixel.com/100/190/nature/6">
+          </div>
+          <div class="card-stacked">
+            <div class="card-content">
+              <div class = "card-title">Computer Science</div>
+              <p>Learn about several topics in computer science through our awesome lectures here.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class = "section">
-    <h5>By category</h5>
-     <div class="card horizontal">
-      <div class="card-image">
-        <img src="http://lorempixel.com/100/190/nature/6">
-      </div>
-      <div class="card-stacked">
-        <div class="card-content">
-          <div class = "card-title">Computer Science</div>
-          <p>Learn about several topics in computer science through our awesome lectures here.</p>
+    <div id="teach-modal" class="modal">
+      <div class="modal-content">
+        <h4>Teach a Lecture</h4>
+        <div class = "row">
+          <div class="input-field col s6 offset-s3">
+            <input placeholder="Your username (create if it doesn't exist)" id="username" type="text" class="validate">
+          </div>
         </div>
-      </div>
-    </div>
+        <div class = "row hide" id = "password-row">
+          <div class="input-field col s6 offset-s3">
+            <input placeholder="Username previously used, enter or create password" id="password" type="password" class="validate">
+          </div>
+        </div>
+        <div class = "row">
+          <div class = "input-field">
+           <input placeholder="Lecture title" id="title" type="text" class="validate">
+         </div>
+       </div>
+       <div class = "row hide" id = "tag-display"></div>
+     <div class = "row">
+      <div class = "input-field">
+       <input placeholder="Topic tags (press enter after each one)" id="tags" type="text">
+     </div>
+   </div>
+   <div class = "row">
+    <p>
+      <input type="checkbox" class = "filled-in" id="private" />
+      <label for="private">Make this room private</label>
+    </p>
   </div>
-  </div>
+       </div>
+<div class="modal-footer">
+  <a href="#!" id = "start-lecture" class=" modal-action modal-close waves-effect waves-white btn-flat">Start Preparing</a>
+</div>
+</div>
 
-      <!--Import jQuery before materialize.js-->
-      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-    </body>
-  </html>
+
+<!--Import jQuery before materialize.js-->
+
+<script>
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });
+  $("#tags").bind("keypress", function(e) {
+    if(e.which == 13) {
+      $("#tag-display").removeClass("hide");
+      $("#tag-display").append("<div class = 'chip'>" + $("#tags").val() + "<i class = 'close material-icons'>close</i></div>");
+      $("#tags").val("");
+    }
+  });
+  $("#username").bind("keypress", function(e) {
+    if ($("#username").val().length > 5) {
+      $.ajax({
+        method: "POST",
+        url: "/usernamecheck",
+        data : {
+          username: $("#username").val(),
+        },
+        complete: function(response) {
+          if (response == "not found") {
+            $("#username").removeClass("invalid");
+            $("#username").addClass("valid");
+            $("#password-row").addClass("hide");
+          }
+          else { //already inputted username
+            $("#password-row").removeClass("hide");
+          }
+        }
+      });
+    }
+  });
+  $("#start-lecture").click(function() {
+    $.ajax({
+      method: "POST",
+      url: "/createlecture",
+      data: {
+        username : $("#username").val(),
+        password : $("#password").val(),
+        lectureName : $("#title").val(),
+        lectureTags : getTagVals(),
+        private     : $("#private").is(":checked"),
+      },
+      complete: function(response) {
+        window.location(response);
+      }
+    })
+  });
+</script>
+</body>
+</html>
