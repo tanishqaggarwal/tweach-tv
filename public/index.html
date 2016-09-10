@@ -113,8 +113,8 @@
     if ($("#username").val().length > 5) {
       $.ajax({
         method: "POST",
-        url: "/new/viewerid",
-        data : {
+        url: "/checkusername",
+        headers: {
           uid: $("#username").val(),
         },
         complete: function(response) {
@@ -146,8 +146,8 @@
   $("#start-lecture").click(function() {
     $.ajax({
       method: "POST",
-      url: "/new/" + "private" ? $("#private").is(":checked") : "public",
-      data: {
+      url: "/new/" + ($("#private").is(":checked") ? "private" : "public"),
+      headers: {
         uid : $("#username").val(),
         password : $("#password").val(),
         roomid : slugify($("#title").val()),
@@ -155,7 +155,7 @@
       },
       complete: function(response) {
         $("#teach-modal").closeModal();
-        window.location( "/room/" + JSON.parse(response).roomid);
+        window.location = "/room/" + ($("#private").is(":checked") ? JSON.parse(response.responseText).roomid : slugify($("#title").val()));
       }
     })
   });

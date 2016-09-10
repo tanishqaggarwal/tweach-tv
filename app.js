@@ -16,6 +16,7 @@ router.post("/new/private", function(req, res) {
   var r = new Room(req.get("uid"));
   rooms[r.roomid] = r;
   res.json(r.toJSON());
+  console.log(rooms);
 });
 
 router.post("/new/public", function(req, res) {
@@ -27,10 +28,11 @@ router.post("/new/public", function(req, res) {
     rooms[r.roomid] = r;
     res.json(r.toJSON());
   }
+  console.log(rooms);
 });
 
 router.post("/new/viewerid", function(req, res) {
-  if(!viewers.contains(req.get("uid"))) {
+  if(!viewers.includes(req.get("uid"))) {
     viewers.push(req.get("uid"));
     res.send(viewers);
     res.end();
@@ -40,10 +42,10 @@ router.post("/new/viewerid", function(req, res) {
 });
 
 router.get("/room/:roomid", function(req, res) {
-  if(!rooms[req.params("roomid")]) {
+  if(!rooms[req.param("roomid")]) {
     res.sendStatus(404);
   } else {
-    var r = rooms[req.params("roomid")];
+    var r = rooms[req.param("roomid")];
     if(req.get("uid") != r.owner) {
       if(r.viewers.indexOf(req.get("uid")) < 0) {
         r.viewers.push(req.get("uid"));
@@ -55,5 +57,6 @@ router.get("/room/:roomid", function(req, res) {
 });
 
 app.use("/", router);
+app.use(express.static("public"));
 app.listen(6969);
 console.log("listening on 6969");
