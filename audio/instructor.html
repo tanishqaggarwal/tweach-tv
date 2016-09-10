@@ -13,11 +13,30 @@
 </body>
 
 <script>
-  var peer = new Peer("penn-instructor", {key: "y5cxqfaeq5cj714i"});
-  var conn = peer.connect("penn-student");
+  var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+  var me = new Peer("penn-instructor", {key: "y5cxqfaeq5cj714i"});
+  var conn = me.connect("penn-student");
 
-  $("#msgform").on("submit", function() {
+  var myStream;
+  navigator.getUserMedia({video: false, audio: true}, function succ(astream) {myStream = astream}, function error(err) {});
+
+  conn.outgoing = me.call("penn-student", myStream);
+
+  conn.outgoing.on("error", function(err) {
+    console.log("rip");
+  });
+
+
+
+
+  /*$("#msgform").on("submit", function() {
     console.log("jquery event triggered");
     conn.send($("#msgtext").val());
-  });
+    getUserMedia({video: false, audio: true}, function(stream) {
+      var call = peer.call('penn-student');
+    }, function(err) {
+      console.log('Failed to get local stream' ,err);
+    });
+  });/
+
 </script>
