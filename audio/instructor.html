@@ -1,0 +1,23 @@
+<html>
+<head>
+  <script src="http://cdn.peerjs.com/0.3/peer.js"></script>
+  <script   src="https://code.jquery.com/jquery-3.1.0.js"></script>
+</head>
+
+<body>
+  <h1 id="lmao">Instructor</h1>
+  <form id="msgform">
+    <input type="text" name="msg" id="msgtext"><br>
+    <input type="submit" value="Send">
+  </form>
+</body>
+
+<script>
+  var peer = new Peer("penn-instructor", {key: "y5cxqfaeq5cj714i"});
+  var conn = peer.connect("penn-student");
+
+  $("#msgform").on("submit", function() {
+    console.log("jquery event triggered");
+    conn.send($("#msgtext").val());
+  });
+</script>

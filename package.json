@@ -1,6 +1,9 @@
 {
-  "name" : "tweach-tv",
-  "version" : "0.0.1",
-  "description" : "An interactive lecture streaming platform with aids for content creation",
-  "private" : true
+  "name": "tweach-tv",
+  "version": "0.0.1",
+  "description": "An interactive lecture streaming platform with aids for content creation",
+  "private": true,
+  "dependencies": {
+    "socket.io": "^1.4.8"
+  }
 }
