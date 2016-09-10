@@ -90,7 +90,7 @@
   </div>
        </div>
 <div class="modal-footer">
-  <a href="#!" id = "start-lecture" class=" modal-action modal-close waves-effect waves-white btn-flat">Start Preparing</a>
+  <a href="#!" id = "start-lecture" class="modal-action waves-effect waves-white btn-flat">Start Preparing</a>
 </div>
 </div>
 
@@ -130,6 +130,10 @@
       });
     }
   });
+  function getTagVals() {
+    var str = $(".chip").text().toString().replace(/close/g, ",");
+    return str.substring(0, str.length - 1);
+  }
   $("#start-lecture").click(function() {
     $.ajax({
       method: "POST",
@@ -142,6 +146,7 @@
         private     : $("#private").is(":checked"),
       },
       complete: function(response) {
+        $("#teach-modal").closeModal();
         window.location(response);
       }
     })
