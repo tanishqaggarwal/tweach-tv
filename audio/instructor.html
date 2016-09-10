@@ -1,0 +1,40 @@
+<html>
+<head>
+  <script src="http://cdn.peerjs.com/0.3/peer.js"></script>
+  <script   src="https://code.jquery.com/jquery-3.1.0.js"></script>
+</head>
+
+<body>
+  <h1 id="lmao">Instructor</h1>
+  <form id="msgform">
+    <input type="text" name="msg" id="msgtext"><br>
+    <input type="submit" value="Send">
+  </form>
+</body>
+
+<script>
+  navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+  var me = new Peer("penn-instructor", {key: "y5cxqfaeq5cj714i"});
+  var conn = me.connect("penn-student");
+
+  var myStream;
+  navigator.getUserMedia({video: false, audio: true}, function succ(astream) {myStream = astream}, function error(err) {console.log("RIP")});
+
+  
+
+
+
+  $("#msgform").on("submit", function() {
+    console.log("jquery event triggered");
+    conn.send($("#msgtext").val());
+    /*getUserMedia({video: false, audio: true}, function(stream) {
+      var call = peer.call('penn-student');
+    }, function(err) {
+      console.log('Failed to get local stream' ,err);
+    });*/
+	
+  var outgoing = me.call("penn-student", myStream);
+	return false;
+  });
+
+</script>

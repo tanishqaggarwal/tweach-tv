@@ -1,0 +1,37 @@
+<html>
+<head>
+  <script src="http://cdn.peerjs.com/0.3/peer.js"></script>
+  <script   src="https://code.jquery.com/jquery-3.1.0.js"></script>
+</head>
+
+<body>
+  <h1 id="lmao">Student</h1>
+  <p id="newdata"></p>
+</body>
+
+<script>
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+var me = new Peer("penn-student", {key: "y5cxqfaeq5cj714i"});
+
+me.on('connection', function(conn) {
+  conn.on('data', function(data){
+    $("#newdata").append(data);
+    $("#newdata").append("<br>");
+  });
+});
+
+function playStream(stream) {
+  var audio = $('<audio autoplay />').appendTo('body');
+  audio[0].src = (URL || webkitURL || mozURL).createObjectURL(stream);
+}
+
+me.on('call', function(call) {
+  console.log("called ayy");
+  call.answer();
+  call.on("stream", function(stream) {
+    playStream(stream);
+  });
+});
+
+
+</script>
