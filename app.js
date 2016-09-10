@@ -11,9 +11,6 @@ router.post("/debug/rooms", function(req, res) {
   res.send(rooms);
 });
 
-route.get("/", function(req, res) {
-  res.render("index.html");
-});
 
 router.post("/new/private", function(req, res) {
   var r = new Room(req.get("uid"));
@@ -22,22 +19,15 @@ router.post("/new/private", function(req, res) {
 });
 
 router.post("/new/public", function(req, res) {
-  var r = new Room(req.get("uid"));
-  rooms[r.roomid] = r;
-  res.json(r.toJSON());
+  if(rooms[req.get("roomid")]) {
+    res.sendStatus(409);
+  } else {
+    var r = new Room(req.get("uid"));
+    r.roomid = req.get("roomid");
+    rooms[r.roomid] = r;
+    res.json(r.toJSON());
+  }
 });
-
-
-// router.get("/new/public", function(req, res) {
-//   if(rooms[req.get("roomid")]) {
-//     res.sendStatus(409);
-//   } else {
-//     var r = new Room(req.get("uid"));
-//     r.roomid = req.get("roomid");
-//     rooms[r.roomid] = r;
-//     res.json(r.toJSON());
-//   }
-// });
 
 router.post("/new/viewerid", function(req, res) {
   if(!viewers.contains(req.get("uid"))) {

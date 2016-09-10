@@ -134,6 +134,15 @@
     var str = $(".chip").text().toString().replace(/close/g, ",");
     return str.substring(0, str.length - 1);
   }
+  function slugify(text)
+{
+  return text.toString().toLowerCase()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '');            // Trim - from end of text
+}
   $("#start-lecture").click(function() {
     $.ajax({
       method: "POST",
@@ -141,7 +150,7 @@
       data: {
         uid : $("#username").val(),
         password : $("#password").val(),
-        lectureTitle : $("#title").val(),
+        lectureTitle : slugify($("#title").val()),
         lectureTags : getTagVals(),
       },
       complete: function(response) {
