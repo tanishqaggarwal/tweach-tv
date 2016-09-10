@@ -63,7 +63,7 @@
         <h4>Teach a Lecture</h4>
         <div class = "row">
           <div class="input-field col s6 offset-s3">
-            <input placeholder="Your username (create if it doesn't exist)" id="username" type="text" class="validate">
+            <input placeholder="Your nick" id="username" type="text" class="validate">
           </div>
         </div>
         <div class = "row hide" id = "password-row">
@@ -154,6 +154,7 @@
         lectureTags : getTagVals(),
       },
       complete: function(response) {
+        console.log(response);
         $("#teach-modal").closeModal();
         window.location = "/room/" + ($("#private").is(":checked") ? JSON.parse(response.responseText).roomid : slugify($("#title").val()));
       }

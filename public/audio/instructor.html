@@ -14,13 +14,13 @@
 
 <script>
   navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
-  var me = new Peer("penn-instructor", {key: "y5cxqfaeq5cj714i"});
-  var conn = me.connect("penn-student");
+  var me = new Peer("penn-instructor1", {key: "y5cxqfaeq5cj714i"});
+  var conn = me.connect("penn-student1");
 
   var myStream;
   navigator.getUserMedia({video: false, audio: true}, function succ(astream) {myStream = astream}, function error(err) {console.log("RIP")});
 
-  
+
 
 
 
@@ -32,8 +32,9 @@
     }, function(err) {
       console.log('Failed to get local stream' ,err);
     });*/
-	
-  var outgoing = me.call("penn-student", myStream);
+
+  var outgoing = me.call("penn-student1", myStream);
+  console.log(outgoing);
 	return false;
   });
 

@@ -3,9 +3,12 @@ var uuid = require("uuid");
 var router = express.Router();
 var app = express();
 var Room = require("./room");
+var https = require("https");
+var fs = require("fs");
 
 var rooms = {};
 var viewers = [];
+
 
 router.post("/debug/rooms", function(req, res) {
   res.send(rooms);
@@ -58,5 +61,4 @@ router.get("/room/:roomid", function(req, res) {
 
 app.use("/", router);
 app.use(express.static("public"));
-app.listen(6969);
 console.log("listening on 6969");
