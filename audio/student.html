@@ -10,10 +10,10 @@
 </body>
 
 <script>
-var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-var peer = new Peer("penn-student", {key: "y5cxqfaeq5cj714i"});
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+var me = new Peer("penn-student", {key: "y5cxqfaeq5cj714i"});
 
-peer.on('connection', function(conn) {
+me.on('connection', function(conn) {
   conn.on('data', function(data){
     $("#newdata").append(data);
     $("#newdata").append("<br>");
@@ -25,14 +25,11 @@ function playStream(stream) {
   audio[0].src = (URL || webkitURL || mozURL).createObjectURL(stream);
 }
 
-peer.on('call', function(call) {
-  getUserMedia({video: false, audio: true}, function(stream) {
-    call.answer(stream); // Answer the call with an A/V stream.
-    call.on('stream', function(remoteStream) {
-      playStream(remoteStream);
-    });
-  }, function(err) {
-    console.log('Failed to get local stream' ,err);
+me.on('call', function(call) {
+  console.log("called ayy");
+  call.answer();
+  call.on("stream", function(stream) {
+    playStream(stream);
   });
 });
 
