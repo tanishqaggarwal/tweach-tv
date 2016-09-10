@@ -137,17 +137,16 @@
   $("#start-lecture").click(function() {
     $.ajax({
       method: "POST",
-      url: "/createlecture",
+      url: "/new/" + "private" ? $("#private").is(":checked") : "public",
       data: {
-        username : $("#username").val(),
+        uid : $("#username").val(),
         password : $("#password").val(),
-        lectureName : $("#title").val(),
+        lectureTitle : $("#title").val(),
         lectureTags : getTagVals(),
-        private     : $("#private").is(":checked"),
       },
       complete: function(response) {
         $("#teach-modal").closeModal();
-        window.location(response);
+        window.location( "/room/" + JSON.parse(response).roomid);
       }
     })
   });

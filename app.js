@@ -7,28 +7,39 @@ var Room = require("./room");
 var rooms = {};
 var viewers = [];
 
-router.get("/debug/rooms", function(req, res) {
+router.post("/debug/rooms", function(req, res) {
   res.send(rooms);
 });
 
-router.get("/new/private", function(req, res) {
+route.get("/", function(req, res) {
+  res.render("index.html");
+});
+
+router.post("/new/private", function(req, res) {
   var r = new Room(req.get("uid"));
   rooms[r.roomid] = r;
   res.json(r.toJSON());
 });
 
-router.get("/new/public", function(req, res) {
-  if(rooms[req.get("roomid")]) {
-    res.sendStatus(409);
-  } else {
-    var r = new Room(req.get("uid"));
-    r.roomid = req.get("roomid");
-    rooms[r.roomid] = r;
-    res.json(r.toJSON());
-  }
+router.post("/new/public", function(req, res) {
+  var r = new Room(req.get("uid"));
+  rooms[r.roomid] = r;
+  res.json(r.toJSON());
 });
 
-router.get("/new/viewerid", function(req, res) {
+
+// router.get("/new/public", function(req, res) {
+//   if(rooms[req.get("roomid")]) {
+//     res.sendStatus(409);
+//   } else {
+//     var r = new Room(req.get("uid"));
+//     r.roomid = req.get("roomid");
+//     rooms[r.roomid] = r;
+//     res.json(r.toJSON());
+//   }
+// });
+
+router.post("/new/viewerid", function(req, res) {
   if(!viewers.contains(req.get("uid"))) {
     viewers.push(req.get("uid"));
     res.send(viewers);
