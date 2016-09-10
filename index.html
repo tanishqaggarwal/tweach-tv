@@ -113,9 +113,9 @@
     if ($("#username").val().length > 5) {
       $.ajax({
         method: "POST",
-        url: "/usernamecheck",
+        url: "/new/viewerid",
         data : {
-          username: $("#username").val(),
+          uid: $("#username").val(),
         },
         complete: function(response) {
           if (response == "not found") {
@@ -150,7 +150,7 @@
       data: {
         uid : $("#username").val(),
         password : $("#password").val(),
-        lectureTitle : slugify($("#title").val()),
+        roomid : slugify($("#title").val()),
         lectureTags : getTagVals(),
       },
       complete: function(response) {
